@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head') %>
+<body>
+  <main class="card">
+    <h1>Two-factor verification</h1>
+    <p class="muted">Enter the 6-digit code from your authenticator app.</p>
+
+    <% if (errors && errors.length) { %>
+      <ul class="error-list">
+        <% errors.forEach(function(e) { %>
+          <li><%= e.msg %></li>
+        <% }) %>
+      </ul>
+    <% } %>
+
+    <form method="POST" action="/login/2fa" novalidate>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
+      <label for="token">Authentication code</label>
+      <input type="text" id="token" name="token" inputmode="numeric" pattern="[0-9]{6}"
+             maxlength="6" minlength="6" required autofocus />
+
+      <button type="submit">Verify</button>
+    </form>
+  </main>
+</body>
+</html>
