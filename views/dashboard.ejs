@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head') %>
+<body>
+  <main class="card">
+    <h1>Welcome, <%= user.username %></h1>
+    <p class="muted">Email: <%= user.email %></p>
+
+    <section class="panel">
+      <h2>Two-factor authentication</h2>
+      <% if (user.twofa_enabled) { %>
+        <p class="success">2FA is enabled on your account.</p>
+        <form method="POST" action="/2fa/disable">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <button type="submit" class="secondary">Disable 2FA</button>
+        </form>
+      <% } else { %>
+        <p class="muted">2FA is not enabled. Add it for stronger account protection.</p>
+        <a href="/2fa/setup"><button type="button">Enable 2FA</button></a>
+      <% } %>
+    </section>
+
+    <form method="POST" action="/logout" class="logout-form">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <button type="submit" class="secondary">Log out</button>
+    </form>
+  </main>
+</body>
+</html>
