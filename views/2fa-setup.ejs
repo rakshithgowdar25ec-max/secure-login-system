@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head') %>
+<body>
+  <main class="card">
+    <h1>Set up two-factor authentication</h1>
+    <p class="muted">Scan this QR code with an authenticator app (Google Authenticator, Authy, 1Password, etc).</p>
+
+    <img src="<%= qrDataUrl %>" alt="2FA QR code" class="qr" />
+
+    <p class="muted">Or enter this key manually: <code><%= manualKey %></code></p>
+
+    <% if (errors && errors.length) { %>
+      <ul class="error-list">
+        <% errors.forEach(function(e) { %>
+          <li><%= e.msg %></li>
+        <% }) %>
+      </ul>
+    <% } %>
+
+    <form method="POST" action="/2fa/setup" novalidate>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
+      <label for="token">Enter the 6-digit code to confirm</label>
+      <input type="text" id="token" name="token" inputmode="numeric" pattern="[0-9]{6}"
+             maxlength="6" minlength="6" required autofocus />
+
+      <button type="submit">Confirm and enable 2FA</button>
+    </form>
+
+    <p class="muted"><a href="/dashboard">Cancel</a></p>
+  </main>
+</body>
+</html>
