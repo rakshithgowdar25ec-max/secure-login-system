@@ -32,3 +32,17 @@ function ensureCsrfToken(req, res, next) {
 function verifyCsrfToken(req, res, next) {
   const submitted = req.body._csrf;
   if (!submitted || submitted !== req.session.csrfToken) {
+    return res.status(403).render("error", {
+      message: "Your session expired or the form was tampered with. Please try again.",
+    });
+  }
+  next();
+}
+
+module.exports = {
+  requireAuth,
+  requireGuest,
+  requirePendingTwoFactor,
+  ensureCsrfToken,
+  verifyCsrfToken,
+};
